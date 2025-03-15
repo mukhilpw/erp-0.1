@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Application Plan</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Same CSS as before with some additions */
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; animation: fadeIn 1s ease-in-out; }
+        h1, h2 { color: #343a40; }
+        .card { margin-bottom: 20px; border-radius: 15px; opacity: 0; animation: fadeInUp 1s ease-in-out forwards; }
+        .card-header { background-color: #4CAF50; color: white; text-align: center; animation: slideInLeft 1s ease-in-out forwards; }
+        .card-body { background-color: #ffffff; }
+        .module-title { color: #007bff; font-weight: bold; }
+        .icon { font-size: 30px; color: #007bff; margin-right: 10px; }
+        .list-group-item { background-color: #f8f9fa; animation: fadeInUp 1s ease-in-out forwards; }
+        .container { padding: 20px; }
+        .btn-info { background-color: #007bff; color: white; }
+        .filter-input { margin-bottom: 20px; padding: 10px; width: 100%; max-width: 400px; border-radius: 5px; border: 1px solid #ced4da; }
+        .module-form { display: none; margin-top: 10px; }
+        .btn-danger { background-color: #dc3545; color: white; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-100%); } to { opacity: 1; transform: translateX(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">ERP Application Plan</h1>
+
+        <!-- Filter Input -->
+        <div class="text-center">
+            <input type="text" id="filterInput" class="filter-input" placeholder="Filter modules by name, description, or sub-items...">
+        </div>
+
+        <!-- All Modules -->
+        <div class="card">
+            <div class="card-header">
+                <h3>All ERP Modules</h3>
+            </div>
+            <div class="card-body">
+                <!-- Add Module Buttons -->
+                <div class="mb-3">
+                    <button class="btn btn-info" onclick="showAddForm('head_office')">Add Head Office Module</button>
+                    <button class="btn btn-info" onclick="showAddForm('project')">Add Project Module</button>
+                </div>
+
+                <!-- Add Module Form -->
+                <div id="addForm" class="module-form">
+                    <form id="moduleForm">
+                        {% csrf_token %}
+                        <input type="hidden" id="moduleId">
+                        <input type="hidden" id="category">
+                        <div class="mb-3">
+                            <label>Name</label>
+                            <input type="text" id="moduleName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Description</label>
+                            <textarea id="moduleDescription" class="form-control" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label>Module Type</label>
+                            <select id="moduleType" class="form-control" required>
+                                <!-- Options will be populated by JS -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label>Sub-Items (comma-separated)</label>
+                            <textarea id="moduleSubItems" class="form-control" required></textarea>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="saveModule()">Save</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideAddForm()">Cancel</button>
+                    </form>
+                </div>
+
+                <!-- Modules List -->
+                <div id="modulesList">
+                    <h4 class="module-title">Head Office Modules</h4>
+                    {% for module in head_office_modules %}
+                        <div class="module-item" data-id="{{ module.id }}" data-category="head_office" data-name="{{ module.name|lower }}" data-description="{{ module.description|lower }}" data-subitems="{{ module.sub_items|lower }}">
+                            <p>
+                                <strong>{{ module.name }}</strong> - {{ module.description }}
+                                <ul>
+                                    {% for item in module.sub_items.split|slice:"," %}
+                                        <li>{{ item }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <button class="btn btn-info btn-sm" onclick="editModule('{{ module.id }}', 'head_office')">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteModule('{{ module.id }}', 'head_office')">Delete</button>
+                            </p>
+                        </div>
+                    {% empty %}
+                        <p>No Head Office Modules yet.</p>
+                    {% endfor %}
+
+                    <h4 class="module-title">Project-Specific Modules</h4>
+                    {% for module in project_modules %}
+                        <div class="module-item" data-id="{{ module.id }}" data-category="project" data-name="{{ module.name|lower }}" data-description="{{ module.description|lower }}" data-subitems="{{ module.sub_items|lower }}">
+                            <p>
+                                <strong>{{ module.name }}</strong> - {{ module.description }}
+                                <ul>
+                                    {% for item in module.sub_items.split|slice:"," %}
+                                        <li>{{ item }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <button class="btn btn-info btn-sm" onclick="editModule('{{ module.id }}', 'project')">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteModule('{{ module.id }}', 'project')">Delete</button>
+                            </p>
+                        </div>
+                    {% empty %}
+                        <p>No Project-Specific Modules yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const headOfficeTypes = [
+            {value: 'HR', text: 'HR Management'},
+            {value: 'Accounts', text: 'Accounts'},
+            {value: 'Sales', text: 'Sales'},
+            {value: 'Purchase', text: 'Purchase'},
+            {value: 'IT', text: 'IT Asset Management'},
+            {value: 'Workshop', text: 'Workshop Management'}
+        ];
+        const projectTypes = [
+            {value: 'Procurement', text: 'Procurement'},
+            {value: 'QAQC', text: 'QA/QC'},
+            {value: 'QS', text: 'Quantity Surveying'},
+            {value: 'DC', text: 'Document Control'},
+            {value: 'Planning', text: 'Planning'},
+            {value: 'Store', text: 'Store Asset Management System'},
+            {value: 'HSE', text: 'Health, Safety, Environment'}
+        ];
+
+        // Show Add Form
+        function showAddForm(category) {
+            document.getElementById('addForm').style.display = 'block';
+            document.getElementById('moduleId').value = '';
+            document.getElementById('category').value = category;
+            document.getElementById('moduleName').value = '';
+            document.getElementById('moduleDescription').value = '';
+            document.getElementById('moduleSubItems').value = '';
+            const select = document.getElementById('moduleType');
+            select.innerHTML = '';
+            const types = category === 'head_office' ? headOfficeTypes : projectTypes;
+            types.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.value;
+                option.text = type.text;
+                select.appendChild(option);
+            });
+        }
+
+        // Hide Add Form
+        function hideAddForm() {
+            document.getElementById('addForm').style.display = 'none';
+        }
+
+        // Edit Module
+        function editModule(id, category) {
+            const module = document.querySelector(`.module-item[data-id="${id}"]`);
+            const name = module.querySelector('strong').textContent;
+            const description = module.querySelector('p').childNodes[2].textContent.trim();
+            const subItems = Array.from(module.querySelectorAll('li')).map(li => li.textContent).join(', ');
+
+            showAddForm(category);
+            document.getElementById('moduleId').value = id;
+            document.getElementById('category').value = category;
+            document.getElementById('moduleName').value = name;
+            document.getElementById('moduleDescription').value = description;
+            document.getElementById('moduleSubItems').value = subItems;
+            const select = document.getElementById('moduleType');
+            const types = category === 'head_office' ? headOfficeTypes : projectTypes;
+            select.innerHTML = '';
+            types.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.value;
+                option.text = type.text;
+                select.appendChild(option);
+            });
+            // Set the current module type (you might need to fetch this from the server if not stored in DOM)
+        }
+
+        // Save Module (Add/Edit)
+        function saveModule() {
+            const id = document.getElementById('moduleId').value;
+            const category = document.getElementById('category').value;
+            const name = document.getElementById('moduleName').value;
+            const description = document.getElementById('moduleDescription').value;
+            const subItems = document.getElementById('moduleSubItems').value;
+            const moduleType = document.getElementById('moduleType').value;
+
+            const data = {
+                name: name,
+                description: description,
+                sub_items: subItems,
+                module_type: moduleType,
+                category: category
+            };
+
+            const url = id ? '/qs/edit-module/' : '/qs/add-module/'; 
+            // const url =  '/add-module/'; 
+        
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest', // Ensure this is included
+                    'X-CSRFToken': getCookie('csrftoken')  // Include CSRF Token
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error:', data.error);
+                } else {
+                    console.log('Success:', data);
+                    hideAddForm();
+                    location.reload(); // Reload page to reflect the changes
+                }
+            })
+            .catch(error => console.error('Fetch Error:', error));
+        }
+        // Delete Module
+        function deleteModule(id, category) {
+            if (confirm('Are you sure you want to delete this module?')) {
+                fetch('/delete-module/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({ id, category })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.querySelector(`.module-item[data-id="${id}"]`).remove();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+
+        // Filter Modules
+        document.getElementById('filterInput').addEventListener('input', function() {
+            const filterValue = this.value.toLowerCase();
+            const modules = document.querySelectorAll('.module-item');
+            modules.forEach(module => {
+                const name = module.getAttribute('data-name');
+                const description = module.getAttribute('data-description');
+                const subitems = module.getAttribute('data-subitems');
+                module.style.display = (name.includes(filterValue) || description.includes(filterValue) || subitems.includes(filterValue)) ? 'block' : 'none';
+            });
+        });
+
+        // Get CSRF Token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
