@@ -1,0 +1,9 @@
+each step we need to do this git commants
+# for add 
+git add .
+git commit -m ""
+git push
+
+
+# for check 
+git log
