@@ -5,3 +5,4 @@ urlpatterns = [
     path('index',views.vindex,name='nindex'),
 
 ]
+
