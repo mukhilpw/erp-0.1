@@ -1,0 +1,180 @@
+{% extends 'bt/base1.html' %}
+
+{% block title %}Menu{% endblock %}
+
+{% block content %}
+
+
+
+
+<style>
+    .card-img-top {
+        width: 100%;
+        height: 200px; /* Set a fixed height for all images */
+        object-fit: cover; /* Ensure the image covers the area without distortion */
+    }
+</style>
+<style>
+    .card {
+        height: 100%;  /* Make all cards equal height */
+        display: flex;
+        flex-direction: column;
+    }
+    .card-body {
+        flex: 1;  /* Allow card body to fill available space */
+        display: flex;
+        flex-direction: column;
+    }
+    .card-text {
+        flex-grow: 1;  /* Allow text to push button to bottom */
+    }
+    .card-img-top {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;  /* Make image cover full area */
+    }
+    .btn {
+        margin-top: auto;  /* Push button to bottom */
+    }
+</style>
+<!-- add effect and style  for cards -->
+<style>
+
+
+
+    /* Card hover effects */
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 25px;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .card:hover {
+
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        background-color: #f0f0f0;
+    }
+
+    /* Card image effects */
+    .card-img-top {
+        transition: transform 0.5s ease;
+    }
+
+    .card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+
+    /* Card title styling */
+    .card-title {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-top: 15px;
+        font-size: 1.25rem;
+    }
+
+    /* Card text styling */
+    .card-text {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        
+    }
+
+    /* Button styling */
+    .btn-primary {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #2980b9, #3498db);
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+    }
+
+    /* Grid spacing */
+    .row > div {
+        padding: 15px;
+    }
+
+    /* Card body padding */
+    .card-body {
+        padding: 1.5rem;
+        background: #ffffff;
+    }
+    
+</style>
+
+
+
+<div class="main-container m-4">
+    <style>
+        .row {
+            margin-top: 1%;
+            margin-bottom: 1%;
+        }
+        
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+    <div class="row mt-5">
+
+        <!-- Fallback HTML if no cards are provided -->
+        <style>
+            .card-img-top {
+                /* width: 200px; Adjust width automatically to fit the container */
+                width: 150px;
+                height: 100px; /* Set a fixed height for all images */
+                object-fit: cover; /* Ensure the image covers the area without distortion */
+                margin: auto; /* Center the image horizontally */
+                display: block; /* Remove extra space around the image */
+                
+            }
+        </style>
+        <!-- <style>
+            .card {
+                height: 200px; /* Set a fixed height for all cards */
+            }
+            .card-body {
+                padding: 0.5rem; /* Reduce padding */
+            }
+            .card-img-top {
+                height: 80px; /* Reduce image height */
+            }
+            .card-title {
+                font-size: 14px; /* Reduce title font size */
+            }
+            .card-text {
+                font-size: 12px; /* Reduce text font size */
+            }
+        </style> -->
+
+
+
+        <div class="col-md-2">
+            <div class="col-md-3">
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <!-- <img src="https://cdn1.vectorstock.com/i/1000x1000/37/65/hse-health-safety-environmenconstruction-worker-vector-34313765.jpg" class="card-img-top" alt="HSE Staff"> -->
+                    <!-- <h5 class="card-title">Staff Details</h5> -->
+                    <p class="card-text">Manage All Staff information.</p>
+                    <a href="" class="btn btn-primary">All Staff Details</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}
+
+
+

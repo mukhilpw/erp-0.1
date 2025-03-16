@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'qs'
+    'adminapp',
+    'logdata_and_tel',
+    'hse',
+    'qs',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +59,9 @@ ROOT_URLCONF = 'ERP.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [
+            BASE_DIR / 'templates',  # This points to the templates folder next to manage.py
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

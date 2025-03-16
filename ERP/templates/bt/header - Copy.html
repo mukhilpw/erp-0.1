@@ -1,0 +1,48 @@
+
+<style>
+    header {
+        height: 50px; /* reduce the height of the header */
+    }
+</style>
+
+
+<header class="bg-primary text-white py-3">
+    <div class="m-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="mb-0">HSE Management System</h1>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <nav>
+
+
+
+                    <ul class="list-inline mb-0">
+                        {% if user.is_authenticated %}
+                            <div class="row">
+                                <div class="col-8">
+                                </div>
+                                <div class="col-1 d-flex justify-content-center align-items-center">
+                                    
+                                    <li class="bi bi-person text-center" style="font-size: 2.5rem;"></li>
+                                </div>
+                                <div class="col-1">
+                                    <div class="col">{{ user.username }}
+                                    </div>
+                                    <div class="col"><a href="{% url 'logout' %}" class="text-white">Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <li class="bi bi-person">{{ user.username }} <a href="{% url 'logout' %}" class="text-white">Logout</a></li> -->
+                        {% else %}
+                            <li class="list-inline-item"><a href="{% url 'login_page' %}" class="text-white">Login</a></li>
+                        {% endif %}
+
+                        <!-- <li class="list-inline-item"><a href="#" class="text-white">About</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-white">Contact</a></li> -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>

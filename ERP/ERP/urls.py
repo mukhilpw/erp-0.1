@@ -16,8 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from .import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('', views.vhome, name='nhome'),
+    path('login/', views.vlogin, name='nlogin'),
+    path('logout/', views.vlogout, name='nlogout'),
+    path('menu/', views.vmenu, name='nmenu'),
+
+    #adminapp for permission and user
+    path('adminapp/',include('adminapp.urls')),
+    #logdata_and_tel for log data and telegram
+    path('logdata_and_tel/',include('logdata_and_tel.urls')),
+    
+    #hse
+    path('hse/',include('hse.urls')),
+    #qs
     path('qs/',include('qs.urls')),
+
 ]

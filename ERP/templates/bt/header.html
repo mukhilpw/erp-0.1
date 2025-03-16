@@ -1,0 +1,149 @@
+
+
+
+<style>
+    /* @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro); */
+    @keyframes ticker {
+        0%   {margin-top: 0}
+        25%  {margin-top: -30px}
+        50%  {margin-top: -60px}
+        75%  {margin-top: -90px}
+        100% {margin-top: 0}
+    }
+
+    .right-side-notification {
+        float: right;
+        text-align: center;
+        margin-left: 10px;
+        margin-right: 10px;
+
+        width: 30%;
+    }
+
+    .news {
+    box-shadow: inset 0 -15px 30px rgba(0,0,0,0.4), 0 5px 10px rgba(0,0,0,0.5);
+    width: 350px;
+    height: 55px;
+    margin: 3px auto;
+    overflow: hidden;
+    border-radius: 4px;
+    padding: 3px;
+    -webkit-user-select: none
+    } 
+    .full-width{
+        width: 100%;
+    }
+    .news span {
+    float: left;
+    color: #fff;
+    padding: 6px;
+    position: relative;
+    top: 1%;
+    border-radius: 4px;
+    box-shadow: inset 0 -15px 30px rgba(0,0,0,0.4);
+    font: 16px 'Source Sans Pro', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none;
+    cursor: pointer
+    }
+
+    .news ul {
+    float: left;
+    padding-left: 20px;
+    animation: ticker 10s cubic-bezier(1, 0, .5, 0) infinite;
+    -webkit-user-select: none
+    }
+
+    .news ul li {line-height: 30px; list-style: none }
+
+    .news ul li a {
+    color: #fff;
+    text-decoration: none;
+    font: 18px Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none
+    }
+
+    .news ul:hover { animation-play-state: paused }
+    .news span:hover+ul { animation-play-state: paused }
+
+    /* OTHER COLORS */
+    .blue { background: #347fd0 }
+    .blue span { background: #2c66be }
+    .red { background: #d23435 }
+    .red span { background: #c22b2c }
+    .green { background: #699B67 }
+    .green span { background: #547d52 }
+    .magenta { background: #b63ace }
+    .magenta span { background: #842696 }
+
+    .yellow {background : yellow}
+    .yellow span {background : yellow}
+</style>
+
+<div class="news blue full-width">
+    <div class="row">
+        <div class="col-md-3" style="text-align: center; margin-top: 10px;">
+            <span>Notifications</span>
+            <ul style="width:80%;">
+
+            </ul>
+        </div>
+
+        <div class="col-md-4" style="text-align: center; margin-top: 10px; ">
+            <span>Important</span>
+            <ul>
+                
+            </ul>
+        </div>
+
+
+        <div class="col-md-5" style="text-align: right; margin-top: 10px;"">
+            <!-- <div class="date-time" style="float: center; font-size: 10px; font-weight: bold;"> -->
+                <span id="date"></span>
+                <span id="time"></span>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="date-time" style="float: center; font-size: 10px; font-weight: bold;">
+        <span id="date"></span>
+        <span id="time"></span>
+    </div> -->
+<!-- 
+    <div class="date-time" style="float: center; font-size: 10px; font-weight: bold;">
+        <span id="date"></span>
+        <span id="time"></span>
+    </div> -->
+</div>
+
+
+<script>
+    function showTime() {
+        var date = new Date();
+        var h = date.getHours(); // 0 - 23
+        var m = date.getMinutes(); // 0 - 59
+        var s = date.getSeconds(); // 0 - 59
+        var session = "AM";
+        
+        if(h == 0){
+            h = 12;
+        }
+        
+        if(h > 12){
+            h = h - 12;
+            session = "PM";
+        }
+        
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+        s = (s < 10) ? "0" + s : s;
+        
+        var time = h + ":" + m + ":" + s + " " + session;
+        document.getElementById("time").innerText = time;
+        document.getElementById("date").innerText = date.toDateString();
+        setTimeout(showTime, 1000);
+    }
+    
+    showTime();
+</script>
+

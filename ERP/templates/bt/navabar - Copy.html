@@ -1,0 +1,305 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-primary bg-primary ">
+    <a href="" class="bi bi-house text-white"></a>
+
+    <div class="container-fluid px-4">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="" alt="Logo" height="40">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <style>
+            /* Modern styling for navbar */
+            .navbar {
+                background: linear-gradient(45deg, #2193b0, #6dd5ed) !important;
+                box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+                padding: 1rem 2rem;
+            }
+
+            .navbar-brand img {
+                transition: transform 0.3s ease;
+            }
+
+            .navbar-brand:hover img {
+                transform: scale(1.1);
+            }
+
+            /* Enhanced project carousel effects */
+            .project-carousel-container {
+                perspective: 1000px;
+            }
+
+            .project-carousel {
+                transform-style: preserve-3d;
+                transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .project-item {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(5px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                transform-origin: center center;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .project-item:hover {
+                transform: translateY(-5px) scale(1.05);
+                background: white;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            }
+
+            /* Mouse wheel scroll effect */
+            .project-carousel-container {
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .project-carousel::-webkit-scrollbar {
+                display: none;
+            }
+
+            @media (hover: hover) {
+                .project-carousel-container:hover .project-carousel {
+                    animation-play-state: paused;
+                }
+            }
+
+            /* Smooth animation for project items */
+            @keyframes fadeInScale {
+                from {
+                    opacity: 0;
+                    transform: scale(0.9);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            .project-item {
+                animation: fadeInScale 0.3s ease forwards;
+            }
+        </style>
+
+
+
+
+
+        <div class="d-flex flex-column">
+            <a href="{% url 'nlogin' %}" class="btn btn-light mb-2">Login</a>
+            <a href="{% url 'nlogout' %}" class="btn btn-light mb-2">Logout</a>
+            <a href="{% url 'nmenu' %}" class="btn btn-light">Menu</a>
+        </div>
+       
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const carousel = document.querySelector('.project-carousel');
+                const items = document.querySelectorAll('.project-item');
+                let activeIndex = Math.floor(items.length / 2);
+
+                function updateCarousel() {
+                    items.forEach((item, index) => {
+                        item.classList.remove('active');
+                        if (index === activeIndex) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+
+                // Initial setup
+                updateCarousel();
+
+                // Mouse wheel event
+                carousel.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    if (e.deltaY > 0 && activeIndex < items.length - 1) {
+                        activeIndex++;
+                    } else if (e.deltaY < 0 && activeIndex > 0) {
+                        activeIndex--;
+                    }
+                    updateCarousel();
+                });
+            });
+        </script>
+
+        <!-- Project Selection Dropdown -->
+        <div class="d-flex align-items-center me-3">
+
+
+        </div>
+   
+
+        <!-- Project Tools Dropdown -->
+        <div class="d-flex align-items-center me-3">
+            <span class="text-white me-2"></span>
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button" id="toolsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
+                    <li><a class="dropdown-item" href="#">Submittals</a></li>
+                    <!-- Add more tools as needed -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="flex-grow-1 mx-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="not finish yet`" aria-label="Search">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+                <span class="input-group-text">
+                    Ctrl + K
+                </span>
+            </div>
+        </div>
+
+        <!-- Right Side Icons -->
+        <div class="d-flex align-items-center">
+            <!-- Favorites -->
+
+
+            <!-- Apps Dropdown -->
+            <div class="dropdown me-3">
+                <button class="btn btn-link dropdown-toggle" type="button" id="appsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-th"></i>
+                    <span class="ms-1">Apps</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="appsDropdown">
+                    <li><a class="dropdown-item" href="#">Select an App</a></li>
+                </ul>
+            </div>
+
+            <!-- Help Icon -->
+            <div class="me-3">
+                <i class="fas fa-question-circle"></i>
+            </div>
+
+            <!-- Notifications -->
+            <div class="me-3">
+                <i class="fas fa-bell"></i>
+            </div>
+            <!-- Dark/Light Mode Toggle -->
+            <div class="form-check form-switch me-3" title="Switch Theme">
+                <input class="form-check-input" type="checkbox" role="switch" id="themeSwitch">
+                <label class="form-check-label" for="themeSwitch">
+                    <i id="themeIcon" class="bi bi-sun text-white"></i>
+                </label>
+            </div>
+
+            <!-- User Profile -->
+            {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="btn btn-link p-0" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                {{ user.username|first }}
+                            </div>
+                        </div>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <!-- <li><a class="dropdown-item" href="#">Profile</a></li> -->
+                        <li><a class="dropdown-item" href="{% url 'nlogout' %}">Logout</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<style>
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 0.5rem 1rem;
+}
+
+.navbar .btn-link {
+    color: #333;
+    text-decoration: none;
+    padding: 0;
+}
+
+.navbar .input-group {
+    max-width: 600px;
+}
+
+.navbar .input-group-text {
+    background-color: white;
+    border-left: none;
+}
+
+.navbar .form-control {
+    border-right: none;
+}
+
+.navbar .form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.navbar-brand img {
+    max-height: 40px;
+    width: auto;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+</style>
+<style>
+    .form-check-label {
+        cursor: pointer;
+    }
+</style>
+<script>
+    const themeSwitch = document.getElementById('themeSwitch');
+    const themeIcon = document.getElementById('themeIcon');
+    const rootElement = document.documentElement;
+
+    // Check localStorage for the theme
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    rootElement.setAttribute('data-bs-theme', currentTheme);
+    themeSwitch.checked = currentTheme === 'dark';
+    updateIcon(currentTheme);
+
+    // Function to update the icon and tooltip
+    function updateIcon(theme) {
+        if (theme === 'dark') {
+            themeIcon.className = 'bi bi-moon-fill text-white';
+            themeSwitch.title = 'Go to light';
+        } else {
+            themeIcon.className = 'bi bi-sun text-white';
+            themeSwitch.title = 'Go to dark';
+        }
+    }
+
+    // Add event listener for the switch
+    themeSwitch.addEventListener('change', () => {
+        const newTheme = themeSwitch.checked ? 'dark' : 'light';
+        rootElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateIcon(newTheme);
+    });
+</script>
+
+<!-- python manage.py runserver_plus --cert-file="C:\origin.pem" --key-file="C:\origin.key" 0.0.0.0:8000 -->

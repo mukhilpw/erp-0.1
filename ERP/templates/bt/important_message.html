@@ -1,0 +1,89 @@
+{% include 'bt/base1.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+<h1 class="text-left m-4">Messages to All Staff</h1>
+<hr>
+
+<div class="row" style="margin: 10px;">
+    <div class="col-md-6">
+        <form method="post" id="notification-form" action="{% url 'nnotification' %}">
+            {% csrf_token %}
+            <h2>Notification</h2>
+            <div>
+                <label for="notification">Notification:</label>
+                <textarea id="notification" name="notification" class="form-control" value="{{ notification.notification }}"></textarea>
+            </div>
+            <div>
+                <label for="notification_expired_date">Notification Expired Date:</label>
+                <input type="date" id="notification_expired_date" name="notification_expired_date" class="form-control" value="{{ notification.notification_expired_date }}">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Submit Notification</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <form method="post" id="important-form" action="{% url 'nimportant_message' %}">
+            {% csrf_token %}
+            <h2>Important</h2>
+            <div>
+                <label for="important">Important:</label>
+                <textarea id="important" name="important" class="form-control" value="{{ important.important }}"></textarea>
+            </div>
+            <div>
+                <label for="important_expired_date">Important Expired Date:</label>
+                <input type="date" id="important_expired_date" name="important_expired_date" class="form-control" value="{{ important.important_expired_date }}">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Submit Important</button>
+        </form>
+
+    </div>
+
+
+
+<!-- <h2>Notification</h2> -->
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <h2>Notification And Important Message</h2>
+            <p>if expired date is today then delete the message automatically</p>
+            <tr>
+                <th>Notification and Important Message</th>
+                <th>Notification and Important Message Expired Date</th>
+                <!-- <th>Update Notification and Important Message</th> -->
+                <th>Delete Notification and Important Message</th>
+            </tr>
+            {% if notification_message or important_message %}
+                {% for notification in notification_message %}
+                    <tr>
+                        <td>{{ notification.notification }}</td>
+                        <td>{{ notification.notification_expired_date }}</td>
+                        <!-- <td><a href="{% url 'nnotification_update' notification.id %}">Update Notification</a></td> -->
+                        <td><a href="{% url 'nnotification_delete' notification.id %}">Delete Notification</a></td>
+                        
+                    
+                    </tr>
+                {% endfor %}
+                {% for message in important_message %}
+                    <tr>
+                        <td>{{ message.important }}</td>
+                        <td>{{ message.important_expired_date }}</td>
+                        <!-- <td><a href="{% url 'nimportant_message_update' message.id %}">Update Message</a></td> -->
+                        <td><a href="{% url 'nimportant_message_delete' message.id %}">Delete Message</a></td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>     
+</div>
+<!-- both table -->
+
+
+
+
+
+
+
+
+{% endblock %}

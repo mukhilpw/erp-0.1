@@ -1,0 +1,40 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-primary bg-primary  ">
+
+    <div class="container">
+        <a class="navbar-brand text-white" href="{% url 'menu' %}">HSE Management</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                        <div class="col-1">
+                            <div class="col text-white">{{ user.username }}</div>
+                            <div class="col"><a href="{% url 'logout' %}" class="text-white">Logout</a></div>
+                        </div>
+                    {% else %}
+                        <li class="list-inline-item"><a href="{% url 'login_page' %}" class="text-white">Login</a></li>
+                    {% endif %}
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="{% url 'upload' %}">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_data' %}">View Data</a>
+                </li> -->
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+

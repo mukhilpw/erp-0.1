@@ -1,0 +1,294 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-primary bg-primary">
+    <a href="" class="bi bi-house text-white"></a>
+
+    <div class="container-fluid px-4">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" height="40">
+        </a>
+
+        <!-- Project Selection Dropdown -->
+        <div class="project-carousel-container">
+            <div class="adjacent-project prev-project" id="prevProject"></div>
+            <input type="text" class="project-input" value="" id="projectInput" placeholder="Project...">
+            <div class="adjacent-project next-project" id="nextProject"></div>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <style>
+            .navbar {
+                background: linear-gradient(45deg, #2193b0, #6dd5ed) !important;
+                box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+                padding: 0.5rem 1rem; /* Reduced padding */
+            }
+
+            .navbar-brand img {
+                transition: transform 0.3s ease;
+            }
+
+            .navbar-brand:hover img {
+                transform: scale(1.1);
+            }
+
+            .project-carousel-container {
+                width: 150px; /* Further reduced width */
+                position: relative;
+                font-family: 'Segoe UI', Arial, sans-serif;
+                perspective: 1000px;
+                margin: 0 10px; /* Reduced margin */
+            }
+
+            .project-input {
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                padding: 3px 8px; /* Even smaller padding */
+                border-radius: 4px;
+                background: transparent;
+                font-size: 0.8em; /* Smaller font */
+                color: #fff;
+                transition: all 0.3s ease;
+                width: 100%;
+            }
+
+            .project-input:focus {
+                outline: none;
+                border-color: #fff;
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .adjacent-project {
+                position: absolute;
+                width: 90%;
+                left: 5%;
+                padding: 2px 6px; /* Smaller padding */
+                font-size: 0.65em; /* Smaller font */
+                color: #fff;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 3px;
+                transition: all 0.3s ease;
+                opacity: 0;
+            }
+
+            .prev-project { top: -20px; } /* Moved closer to input */
+            .next-project { bottom: -20px; } /* Moved closer to input */
+
+            .project-carousel-container:hover .prev-project,
+            .project-carousel-container:hover .next-project {
+                opacity: 1;
+                transform: translateY(-1px); /* Minimal movement */
+            }
+
+            .project-carousel-container:hover .next-project {
+                transform: translateY(1px);
+            }
+
+            @keyframes fadeSlide {
+                0% { opacity: 0; transform: translateY(3px); }
+                100% { opacity: 1; transform: translateY(0); }
+            }
+
+            .project-changed {
+                animation: fadeSlide 0.3s ease-out;
+            }
+        </style>
+
+        <!-- Project Tools Dropdown -->
+        <div class="d-flex align-items-center me-3">
+            <span class="text-white me-2"></span>
+            <div class="dropdown">
+                <button class="btn btn-link dropdown-toggle text-white" type="button" id="toolsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="toolsDropdown">
+                    <li><a class="dropdown-item" href="#">Submittals</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="flex-grow-1 mx-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="not finished yet" aria-label="Search">
+                <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                </span>
+                <span class="input-group-text">
+                    Ctrl + K
+                </span>
+            </div>
+        </div>
+
+        <!-- Right Side Icons -->
+        <div class="d-flex align-items-center">
+            <div class="dropdown me-3">
+                <button class="btn btn-link dropdown-toggle text-white" type="button" id="appsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-th"></i>
+                    <span class="ms-1">Apps</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="appsDropdown">
+                    <li><a class="dropdown-item" href="#">Select an App</a></li>
+                </ul>
+            </div>
+
+            <div class="me-3 text-white">
+                <i class="fas fa-question-circle"></i>
+            </div>
+
+            <div class="me-3 text-white">
+                <i class="fas fa-bell"></i>
+            </div>
+
+            <div class="form-check form-switch me-3" title="Switch Theme">
+                <input class="form-check-input" type="checkbox" role="switch" id="themeSwitch">
+                <label class="form-check-label" for="themeSwitch">
+                    <i id="themeIcon" class="bi bi-sun text-white"></i>
+                </label>
+            </div>
+
+            {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="btn btn-link p-0" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                {{ user.username|first }}
+                            </div>
+                        </div>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="{% url 'nlogout' %}">Logout</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const projectContainer = document.querySelector('.project-carousel-container');
+        const projectInput = document.getElementById('projectInput');
+        const prevProject = document.getElementById('prevProject');
+        const nextProject = document.getElementById('nextProject');
+
+        const projectData = [
+            {% for project in projects %}
+                "{{ project.project|escapejs }}"{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        let filteredProjects = [...projectData];
+        let currentIndex = 0;
+
+        function filterProjects(searchTerm) {
+            return projectData.filter(project => 
+                project.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
+        function updateProjects() {
+            prevProject.textContent = currentIndex > 0 ? filteredProjects[currentIndex - 1] : '';
+            projectInput.value = filteredProjects[currentIndex] || '';
+            nextProject.textContent = currentIndex < filteredProjects.length - 1 ? filteredProjects[currentIndex + 1] : '';
+
+            projectInput.classList.add('project-changed');
+            setTimeout(() => projectInput.classList.remove('project-changed'), 300);
+        }
+
+        updateProjects();
+
+        projectInput.addEventListener('input', (e) => {
+            filteredProjects = filterProjects(e.target.value);
+            currentIndex = 0;
+            updateProjects();
+        });
+
+        let scrollTimeout;
+        projectContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            clearTimeout(scrollTimeout);
+
+            scrollTimeout = setTimeout(() => {
+                if (e.deltaY > 0 && currentIndex < filteredProjects.length - 1) {
+                    currentIndex++;
+                } else if (e.deltaY < 0 && currentIndex > 0) {
+                    currentIndex--;
+                }
+                updateProjects();
+            }, 50);
+        });
+
+        const themeSwitch = document.getElementById('themeSwitch');
+        const themeIcon = document.getElementById('themeIcon');
+        const rootElement = document.documentElement;
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        rootElement.setAttribute('data-bs-theme', currentTheme);
+        themeSwitch.checked = currentTheme === 'dark';
+        updateIcon(currentTheme);
+
+        function updateIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'bi bi-moon-fill text-white';
+                themeSwitch.title = 'Go to light';
+            } else {
+                themeIcon.className = 'bi bi-sun text-white';
+                themeSwitch.title = 'Go to dark';
+            }
+        }
+
+        themeSwitch.addEventListener('change', () => {
+            const newTheme = themeSwitch.checked ? 'dark' : 'light';
+            rootElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+    });
+</script>
+
+<style>
+    .navbar {
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 0.5rem 1rem;
+    }
+
+    .navbar .btn-link {
+        color: #fff;
+        text-decoration: none;
+        padding: 0;
+    }
+
+    .navbar .input-group {
+        max-width: 600px;
+    }
+
+    .navbar .input-group-text {
+        background-color: white;
+        border-left: none;
+    }
+
+    .navbar .form-control {
+        border-right: none;
+    }
+
+    .navbar .form-control:focus {
+        box-shadow: none;
+        border-color: #ced4da;
+    }
+
+    .dropdown-toggle::after {
+        display: none;
+    }
+
+    .navbar-brand img {
+        max-height: 40px;
+        width: auto;
+    }
+
+    .form-check-label {
+        cursor: pointer;
+    }
+</style>
