@@ -1,0 +1,70 @@
+{% load menu_tags %}
+
+
+<style>
+    .submenuspan {
+        color: white; /* Sets the link color to white */
+        text-decoration: none; /* Removes the underline */
+        padding-top: 10px;
+    },
+    .nav-link {
+        padding-top: 10px;
+    }
+    .submenu-text {
+        padding-top: 10px;
+
+    }
+</style>
+
+
+
+{% load menu_tags %}
+<nav class="sidebar">
+    <ul class="nav flex-column">
+        {% for menu_id in top_level_menus %}
+            {% with menu=menu_hierarchy|dict_get:menu_id %}
+                <li class="nav-item {% if menu.submenus %}has-submenu{% endif %}">
+                    <a class="nav-link"
+                       {% if menu.submenus %}onclick="toggleSubmenu(this)"{% else %}
+                           {% if menu.item.url %}
+                               {% if menu.item.url|slice:":4" == "http" %}
+                                   href="{{ menu.item.url }}"
+                               {% else %}
+                                   href="{% url menu.item.url %}"
+                               {% endif %}
+                           {% endif %}
+                       {% endif %}>
+                        <span>
+                            <i class="{{ menu.item.icon }}"></i>
+                            {{ menu.item.title }}
+                        </span>
+                        {% if menu.submenus %}
+                            <span class="toggle-btn">+</span>
+                        {% endif %}
+                    </a>
+
+                    {% if menu.submenus %}
+                        <div class="submenu">
+                            {% for submenu in menu.submenus %}
+                                <div class="submenu-text">
+                                    <a {% if submenu.url %}
+                                        {% if submenu.url|slice:":4" == "http" %}
+                                            href="{{ submenu.url }}"
+                                        {% else %}
+                                            href="{% url submenu.url %}"
+                                        {% endif %}
+                                    {% endif %}>
+                                        <span class="submenuspan">
+                                            <i class="{{ submenu.icon }}"></i>
+                                            {{ submenu.title }}
+                                        </span>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </li>
+            {% endwith %}
+        {% endfor %}
+    </ul>
+</nav>

@@ -1,0 +1,36 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Upload .bat File</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Upload a .bat File</h1>-->
+<!--    <form method="post" enctype="multipart/form-data">-->
+<!--        {% csrf_token %}-->
+<!--        <input type="file" name="bat_file" accept=".bat" required>-->
+<!--        <button type="submit">Upload and Process</button>-->
+<!--    </form>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload .bat File</title>
+</head>
+<body>
+    <h1>Upload a .bat File</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="bat_file" accept=".bat" required>
+        <button type="submit" name="clean">Upload and Clean</button>
+        <button type="submit" name="expand">Upload and Expand</button>
+    </form>
+</body>
+</html>
