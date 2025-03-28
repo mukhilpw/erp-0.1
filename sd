@@ -1,0 +1,35 @@
+[33mcommit 2e91c415eef945ee3e03c7afa528ef81b40909fb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: mukhil <kgmukhil@gmail.com>
+Date:   Sun Mar 16 23:11:16 2025 +0400
+
+    Created adminapp, hseapp, logdata_tel; added media, static folders, base.html, base1.html, navbar, header, important message; created user permissions model, views, URLs, login, and menu page.
+
+[33mcommit 079844d95d940f2dd568f092c64565b0753c9ccd[m
+Author: saranya <tsaranyasailakshmi@gmail.com>
+Date:   Sat Mar 15 20:06:09 2025 +0530
+
+    qs app is created and models are written
+
+[33mcommit 337fc2ab2cc52f8ede938360a479fdd8f6603cc1[m
+Author: saranya <tsaranyasailakshmi@gmail.com>
+Date:   Sat Mar 15 17:49:00 2025 +0530
+
+    templates,media,static folders created
+
+[33mcommit 51ec075d679377a1635219449801b3c8d75e04a7[m
+Author: saranya <tsaranyasailakshmi@gmail.com>
+Date:   Sat Mar 15 17:36:47 2025 +0530
+
+    qs applicatopn is created and working properly.
+
+[33mcommit be94a978153b5f09a05b83815d979e45cb9dc46d[m
+Author: saranya <tsaranyasailakshmi@gmail.com>
+Date:   Sat Mar 15 17:17:24 2025 +0530
+
+    templates, media,statc folder added
+
+[33mcommit ccc64bf7afc5607b7a25489e625589a9f7e9dd38[m
+Author: saranya <tsaranyasailakshmi@gmail.com>
+Date:   Sat Mar 15 17:04:46 2025 +0530
+
+    Project Created (ERP)
