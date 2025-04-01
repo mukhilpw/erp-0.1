@@ -27,7 +27,7 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    <form action="{% url 'login_page' %}" method="post">
+                    <form action="{% url 'loginweb' %}" method="post">
                         {% csrf_token %}
                         <div class="mb-3">
                             <input type="text" class="form-control" name="username" placeholder="Username" required>

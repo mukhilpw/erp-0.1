@@ -35,5 +35,7 @@ urlpatterns = [
     path('hse/',include('hse.urls')),
     #qs
     path('qs/',include('qs.urls')),
+    #it
+    path('it/',include('it.urls')),
 
 ]

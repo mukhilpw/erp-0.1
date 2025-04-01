@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'logdata_and_tel',
     'hse',
     'qs',
+    'it',
 ]
 
 MIDDLEWARE = [
